@@ -1,7 +1,7 @@
 {
   "name": "example-validator",
   "version": "1.0.0",
-  "description": "Validates the result of code samples&",
+  "description": "Validates the result of code samples",
   "main": "index.js",
   "scripts": {
     "lint": "standard",

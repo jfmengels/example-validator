@@ -4,7 +4,7 @@ var test = require('ava')
 
 var splitIntoSamples = require('../../lib/splitIntoSamples')
 
-test('should split sample into multiple tests based on result comments', function(t) {
+test('should split sample into multiple tests based on result comments', function (t) {
   var sample = [
     '2 + 3',
     '// => 5',
@@ -25,13 +25,13 @@ test('should split sample into multiple tests based on result comments', functio
       '2 + 3',
       '// => 5',
       '',
-      '2 + "7"',
+      '2 + "7"'
     ].join('\n'),
     expected: '27'
   }])
 })
 
-test.skip('should ignore normal comments', function(t) {
+test('should ignore normal comments', function (t) {
   var sample = [
     '2 + 3',
     '// this should be 5',
@@ -47,13 +47,13 @@ test.skip('should ignore normal comments', function(t) {
       '2 + 3',
       '// this should be 5',
       '',
-      '2 + "7"',
+      '2 + "7"'
     ].join('\n'),
     expected: '27'
   }])
 })
 
-test('should ignore code after last result comment', function(t) {
+test('should ignore code after last result comment', function (t) {
   var sample = [
     '2 + 3',
     '// => 5',
@@ -72,8 +72,7 @@ test('should ignore code after last result comment', function(t) {
   }])
 })
 
-
-test('should split only by real `\\n`', function(t) {
+test('should split only by real `\\n`', function (t) {
   var sample = [
     '"I\nam\non\nmultiple\nlines\n"// => 100',
     '2 + 3',
@@ -85,7 +84,7 @@ test('should split only by real `\\n`', function(t) {
   t.same(result, [{
     code: [
       '"I\nam\non\nmultiple\nlines\n"// => 100',
-      '2 + 3',
+      '2 + 3'
     ].join('\n'),
     expected: 5
   }])

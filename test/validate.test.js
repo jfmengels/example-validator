@@ -1,10 +1,11 @@
-'use strict';
+'use strict'
 
+var path = require('path')
 var test = require('ava')
 
 var validate = require('../')
 
-test('should validate sample where result is matching', function(t) {
+test('should validate sample where result is matching', function (t) {
   var sample = [
     '2 + 3',
     '// => 5'
@@ -12,10 +13,10 @@ test('should validate sample where result is matching', function(t) {
 
   var result = validate(sample)
 
-  t.same(result, { ok: true })
+  t.same(result, [])
 })
 
-test('should throw an error when sample is not valid', function(t) {
+test('should throw an error when sample is not valid', function (t) {
   var sample = [
     '2 + 3',
     '// => 6'
@@ -23,14 +24,86 @@ test('should throw an error when sample is not valid', function(t) {
 
   var result = validate(sample)
 
-  t.same(result, { ok: false})
+  t.same(result, [{
+    code: '2 + 3',
+    expected: 6,
+    expression: '2 + 3',
+    got: 5,
+    line: 1
+  }])
 })
 
-test.skip('should throw an error when error is thrown in sample', function(t) {
+test('should throw an error when error is thrown in sample', function (t) {
+  var sample = [
+    'var a = {}',
+    'a.getUnknownMethod()',
+    '// => 6'
+  ].join('\n')
+
+  var result = validate(sample)
+
+  t.same(result, [{
+    code: [
+      'var a = {}',
+      'a.getUnknownMethod()'
+    ].join('\n'),
+    expected: 6,
+    expression: 'a.getUnknownMethod()',
+    got: 'TypeError: a.getUnknownMethod is not a function',
+    line: 2
+  }])
 })
 
-test.skip('should throw an error when assert fails in sample', function(t) {
+test('should validate when error is expected', function (t) {
+  var sample = [
+    'var a = {}',
+    'a.getUnknownMethod()',
+    '// => "TypeError: a.getUnknownMethod is not a function"'
+  ].join('\n')
+
+  var result = validate(sample)
+
+  t.same(result, [])
 })
 
-test.skip('should be able to inject context in sample', function(t) {
+test('should throw an error when assert fails in sample', function (t) {
+  var sample = [
+    'var assert = require("assert")',
+    'assert.equal(1, 2)',
+    '// => "AssertionError: 1 == 2"'
+  ].join('\n')
+
+  var result = validate(sample)
+
+  t.same(result, [])
+})
+
+test('should be able to inject context in sample', function (t) {
+  var context = {
+    lib: {
+      return6: function () { return 6 }
+    }
+  }
+  var sample = [
+    'lib.return6()',
+    '// => 6'
+  ].join('\n')
+
+  var result = validate(sample, { context: context })
+
+  t.same(result, [])
+})
+
+test('should be able to inject dependencies in sample', function (t) {
+  var dependencies = {
+    timesThree: path.join(__dirname, './fixtures/timesThree')
+  }
+  var sample = [
+    'timesThree(3)',
+    '// => 9'
+  ].join('\n')
+
+  var result = validate(sample, { dependencies: dependencies })
+
+  t.same(result, [])
 })
