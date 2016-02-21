@@ -3,7 +3,7 @@
 var path = require('path')
 var test = require('ava')
 
-var validate = require('../')
+var validate = require('../../lib/validate')
 
 test('should validate sample where result is matching', function (t) {
   var sample = [
@@ -96,11 +96,30 @@ test('should be able to inject context in sample', function (t) {
 
 test('should be able to inject dependencies in sample', function (t) {
   var dependencies = {
-    timesThree: path.join(__dirname, './fixtures/timesThree')
+    timesThree: {
+      path: path.join(__dirname, '../fixtures/timesThree')
+    }
   }
   var sample = [
     'timesThree(3)',
     '// => 9'
+  ].join('\n')
+
+  var result = validate(sample, { dependencies: dependencies })
+
+  t.same(result, [])
+})
+
+test('should be able to inject property of a dependency in sample', function (t) {
+  var dependencies = {
+    timesFour: {
+      path: path.join(__dirname, '../fixtures/timesThree'),
+      property: 'timesFour'
+    }
+  }
+  var sample = [
+    'timesFour(3)',
+    '// => 12'
   ].join('\n')
 
   var result = validate(sample, { dependencies: dependencies })
