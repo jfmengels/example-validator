@@ -16,6 +16,17 @@ test('should validate sample where result is matching', function (t) {
   t.same(result, [])
 })
 
+test('should validate sample where result is matching and needs deep-equality checking', function (t) {
+  var sample = [
+    '[2].concat(3)',
+    '// => [2, 3]'
+  ].join('\n')
+
+  var result = validate(sample)
+
+  t.same(result, [])
+})
+
 test('should throw an error when sample is not valid', function (t) {
   var sample = [
     '2 + 3',
