@@ -137,3 +137,17 @@ test('should be able to inject property of a dependency in sample', function (t)
 
   t.same(result, [])
 })
+
+test('should not fail because of a lack of ";"', function (t) {
+  var sample = [
+    '2 + 3',
+    '// => 5',
+    '',
+    '[2].concat(3)',
+    '// => [2, 3]'
+  ].join('\n')
+
+  var result = validate(sample)
+
+  t.same(result, [])
+})
