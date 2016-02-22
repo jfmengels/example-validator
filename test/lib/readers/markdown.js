@@ -4,12 +4,11 @@ var path = require('path')
 var test = require('ava')
 
 var readMarkdown = require('../../../lib/readers').markdown
-var validate = require('../../../lib/validate')
 
-test.cb('should extract the examples from a Markdown file', function(t) {
+test.cb('should extract the examples from a Markdown file', function (t) {
   var pathToFixture = path.join(__dirname, '../../fixtures/markdown-file.md')
 
-  readMarkdown(pathToFixture, function(res, examples) {
+  readMarkdown(pathToFixture, function (res, examples) {
     t.same(examples, [
       [
         '2 + 3',

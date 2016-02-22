@@ -151,3 +151,18 @@ test('should not fail because of a lack of ";"', function (t) {
 
   t.same(result, [])
 })
+
+test('should fail when result comment is not evaluable', function (t) {
+  var sample = [
+    '2 + 3',
+    '// => bla bla 5'
+  ].join('\n')
+
+  var result = validate(sample)
+
+  t.same(result, [{
+    code: '2 + 3',
+    error: 'SyntaxError: Unexpected identifier',
+    comment: 'bla bla 5'
+  }])
+})

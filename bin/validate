@@ -14,6 +14,10 @@ function gracefulExit(error) {
 }
 
 function describeError(error) {
+  if (error.error) {
+    return 'Could not parse result comment: ' + error.error +
+      '\nNear:\n' + error.code
+  }
   return '\tLine ' + error.line + ': ' + error.expression +
     '\nExpected ' + error.expected +
     '\nbut got ' + error.got +

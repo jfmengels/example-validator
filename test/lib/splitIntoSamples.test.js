@@ -89,3 +89,18 @@ test('should split only by real `\\n`', function (t) {
     expected: 5
   }])
 })
+
+test('should write unreadable type when result comment is not evaluable', function (t) {
+  var sample = [
+    '2 + 3',
+    '// => bla bla 5'
+  ].join('\n')
+
+  var result = splitIntoSamples(sample)
+
+  t.same(result, [{
+    code: '2 + 3',
+    error: 'SyntaxError: Unexpected identifier',
+    comment: 'bla bla 5'
+  }])
+})
