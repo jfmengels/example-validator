@@ -1,0 +1,41 @@
+#!/usr/bin/env node
+'use strict'
+
+var _ = require('lodash/fp')
+
+var lib = require('../')
+
+function gracefulExit(error) {
+  if (error) {
+    console.error(error)
+    process.exit(1)
+  }
+  process.exit(0)
+}
+
+function describeError(error) {
+  return '\tLine ' + error.line + ': ' + error.expression +
+    '\nExpected ' + error.expected +
+    '\nbut got ' + error.got +
+    '\nNear:\n' + error.code
+}
+
+lib.readers.markdown(process.argv[2], function(error, examples) {
+  if (error) {
+    return gracefulExit(error)
+  }
+
+  var errors = _.flow(
+    _.map(function(example) {
+      return lib.validate(example)
+    }),
+    _.flatten
+  )(examples)
+
+  if (errors.length === 0) {
+    console.log('All good!')
+    return gracefulExit()
+  }
+  var errorsDescription = errors.map(describeError).join('\n')
+  gracefulExit(errorsDescription)
+})
