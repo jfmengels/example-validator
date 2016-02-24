@@ -6,10 +6,14 @@ var test = require('ava')
 var validate = require('../../lib/validate')
 
 test('should validate sample where result is matching', function (t) {
-  var sample = [
-    '2 + 3',
-    '// => 5'
-  ].join('\n')
+  var sample = {
+    file: '/some/path.md',
+    startLine: 84,
+    code: [
+      '2 + 3',
+      '// => 5'
+    ].join('\n')
+  }
 
   var result = validate({}, sample)
 
@@ -17,10 +21,14 @@ test('should validate sample where result is matching', function (t) {
 })
 
 test('should validate sample where result is matching and needs deep-equality checking', function (t) {
-  var sample = [
-    '[2].concat(3)',
-    '// => [2, 3]'
-  ].join('\n')
+  var sample = {
+    file: '/some/path.md',
+    startLine: 84,
+    code: [
+      '[2].concat(3)',
+      '// => [2, 3]'
+    ].join('\n')
+  }
 
   var result = validate({}, sample)
 
@@ -28,32 +36,42 @@ test('should validate sample where result is matching and needs deep-equality ch
 })
 
 test('should throw an error when sample is not valid', function (t) {
-  var sample = [
-    '2 + 3',
-    '// => 6'
-  ].join('\n')
+  var sample = {
+    file: '/some/path.md',
+    startLine: 84,
+    code: [
+      '2 + 3',
+      '// => 6'
+    ].join('\n')
+  }
 
   var result = validate({}, sample)
 
   t.same(result, [{
+    file: '/some/path.md',
     code: '2 + 3',
     expected: 6,
     expression: '2 + 3',
     got: 5,
-    line: 1
+    line: 85
   }])
 })
 
 test('should throw an error when error is thrown in sample', function (t) {
-  var sample = [
-    'var a = {}',
-    'a.getUnknownMethod()',
-    '// => 6'
-  ].join('\n')
+  var sample = {
+    file: '/some/path.md',
+    startLine: 84,
+    code: [
+      'var a = {}',
+      'a.getUnknownMethod()',
+      '// => 6'
+    ].join('\n')
+  }
 
   var result = validate({}, sample)
 
   t.same(result, [{
+    file: '/some/path.md',
     code: [
       'var a = {}',
       'a.getUnknownMethod()'
@@ -61,16 +79,21 @@ test('should throw an error when error is thrown in sample', function (t) {
     expected: 6,
     expression: 'a.getUnknownMethod()',
     got: 'TypeError: a.getUnknownMethod is not a function',
-    line: 2
+    line: 2,
+    line: 86
   }])
 })
 
 test('should validate when error is expected', function (t) {
-  var sample = [
-    'var a = {}',
-    'a.getUnknownMethod()',
-    '// => "TypeError: a.getUnknownMethod is not a function"'
-  ].join('\n')
+  var sample = {
+    file: '/some/path.md',
+    startLine: 84,
+    code: [
+      'var a = {}',
+      'a.getUnknownMethod()',
+      '// => "TypeError: a.getUnknownMethod is not a function"'
+    ].join('\n')
+  }
 
   var result = validate({}, sample)
 
@@ -78,11 +101,15 @@ test('should validate when error is expected', function (t) {
 })
 
 test('should throw an error when assert fails in sample', function (t) {
-  var sample = [
-    'var assert = require("assert")',
-    'assert.equal(1, 2)',
-    '// => "AssertionError: 1 == 2"'
-  ].join('\n')
+  var sample = {
+    file: '/some/path.md',
+    startLine: 84,
+    code: [
+      'var assert = require("assert")',
+      'assert.equal(1, 2)',
+      '// => "AssertionError: 1 == 2"'
+    ].join('\n')
+  }
 
   var result = validate({}, sample)
 
@@ -95,10 +122,14 @@ test('should be able to inject context in sample', function (t) {
       return6: function () { return 6 }
     }
   }
-  var sample = [
-    'lib.return6()',
-    '// => 6'
-  ].join('\n')
+  var sample = {
+    file: '/some/path.md',
+    startLine: 84,
+    code: [
+      'lib.return6()',
+      '// => 6'
+    ].join('\n')
+  }
 
   var result = validate({ context: context }, sample)
 
@@ -111,10 +142,14 @@ test('should be able to inject dependencies in sample', function (t) {
       path: path.join(__dirname, '../fixtures/timesThree')
     }
   }
-  var sample = [
-    'timesThree(3)',
-    '// => 9'
-  ].join('\n')
+  var sample = {
+    file: '/some/path.md',
+    startLine: 84,
+    code: [
+      'timesThree(3)',
+      '// => 9'
+    ].join('\n')
+  }
 
   var result = validate({ dependencies: dependencies }, sample)
 
@@ -128,10 +163,14 @@ test('should be able to inject property of a dependency in sample', function (t)
       property: 'timesFour'
     }
   }
-  var sample = [
-    'timesFour(3)',
-    '// => 12'
-  ].join('\n')
+  var sample = {
+    file: '/some/path.md',
+    startLine: 84,
+    code: [
+      'timesFour(3)',
+      '// => 12'
+    ].join('\n')
+  }
 
   var result = validate({ dependencies: dependencies }, sample)
 
@@ -139,13 +178,17 @@ test('should be able to inject property of a dependency in sample', function (t)
 })
 
 test('should not fail because of a lack of ";"', function (t) {
-  var sample = [
-    '2 + 3',
-    '// => 5',
-    '',
-    '[2].concat(3)',
-    '// => [2, 3]'
-  ].join('\n')
+  var sample = {
+    file: '/some/path.md',
+    startLine: 84,
+    code: [
+      '2 + 3',
+      '// => 5',
+      '',
+      '[2].concat(3)',
+      '// => [2, 3]'
+    ].join('\n')
+  }
 
   var result = validate({}, sample)
 
@@ -153,16 +196,22 @@ test('should not fail because of a lack of ";"', function (t) {
 })
 
 test('should fail when result comment is not evaluable', function (t) {
-  var sample = [
-    '2 + 3',
-    '// => bla bla 5'
-  ].join('\n')
+  var sample = {
+    file: '/some/path.md',
+    startLine: 84,
+    code: [
+      '2 + 3',
+      '// => bla bla 5'
+    ].join('\n')
+  }
 
   var result = validate({}, sample)
 
   t.same(result, [{
+    file: '/some/path.md',
     code: '2 + 3',
     error: 'SyntaxError: Unexpected identifier',
-    comment: 'bla bla 5'
+    comment: 'bla bla 5',
+    line: 85
   }])
 })

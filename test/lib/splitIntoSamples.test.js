@@ -100,7 +100,8 @@ test('should write unreadable type when result comment is not evaluable', functi
 
   t.same(result, [{
     code: '2 + 3',
+    comment: 'bla bla 5',
     error: 'SyntaxError: Unexpected identifier',
-    comment: 'bla bla 5'
+    line: 1
   }])
 })

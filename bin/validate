@@ -21,11 +21,5 @@ lib.readers.markdown(fileName, function(error, examples) {
   if (error) {
     return gracefulExit(error)
   }
-  var exampleItems = examples.map(function(example) {
-    return {
-      file: fileName,
-      code: example
-    }
-  })
-  gracefulExit(lib.processExamples({}, exampleItems))
+  gracefulExit(lib.processExamples({}, examples))
 })
