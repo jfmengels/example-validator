@@ -5,7 +5,7 @@ var test = require('ava')
 
 var validate = require('../../lib/validate')
 
-test('should validate sample where result is matching', function (t) {
+test('should validate sample where result is matching', (t) => {
   t.plan(1)
   var sample = {
     file: '/some/path.md',
@@ -21,7 +21,7 @@ test('should validate sample where result is matching', function (t) {
   t.same(result, [])
 })
 
-test('should validate sample where result is matching and needs deep-equality checking', function (t) {
+test('should validate sample where result is matching and needs deep-equality checking', (t) => {
   t.plan(1)
   var sample = {
     file: '/some/path.md',
@@ -37,7 +37,7 @@ test('should validate sample where result is matching and needs deep-equality ch
   t.same(result, [])
 })
 
-test('should throw an error when sample is not valid', function (t) {
+test('should throw an error when sample is not valid', (t) => {
   t.plan(1)
   var sample = {
     file: '/some/path.md',
@@ -60,7 +60,7 @@ test('should throw an error when sample is not valid', function (t) {
   }])
 })
 
-test('should throw an error when error is thrown in sample', function (t) {
+test('should throw an error when error is thrown in sample', (t) => {
   t.plan(1)
   var sample = {
     file: '/some/path.md',
@@ -83,12 +83,11 @@ test('should throw an error when error is thrown in sample', function (t) {
     expected: 6,
     expression: 'a.getUnknownMethod()',
     got: 'TypeError: a.getUnknownMethod is not a function',
-    line: 2,
     line: 86
   }])
 })
 
-test('should validate when error is expected', function (t) {
+test('should validate when error is expected', (t) => {
   t.plan(1)
   var sample = {
     file: '/some/path.md',
@@ -105,7 +104,7 @@ test('should validate when error is expected', function (t) {
   t.same(result, [])
 })
 
-test('should throw an error when assert fails in sample', function (t) {
+test('should throw an error when assert fails in sample', (t) => {
   t.plan(1)
   var sample = {
     file: '/some/path.md',
@@ -122,7 +121,7 @@ test('should throw an error when assert fails in sample', function (t) {
   t.same(result, [])
 })
 
-test('should be able to inject context in sample', function (t) {
+test('should be able to inject context in sample', (t) => {
   t.plan(1)
   var context = {
     lib: {
@@ -143,7 +142,7 @@ test('should be able to inject context in sample', function (t) {
   t.same(result, [])
 })
 
-test('should be able to inject dependencies in sample', function (t) {
+test('should be able to inject dependencies in sample', (t) => {
   t.plan(1)
   var dependencies = {
     timesThree: {
@@ -164,7 +163,7 @@ test('should be able to inject dependencies in sample', function (t) {
   t.same(result, [])
 })
 
-test('should be able to inject property of a dependency in sample', function (t) {
+test('should be able to inject property of a dependency in sample', (t) => {
   t.plan(1)
   var dependencies = {
     timesFour: {
@@ -186,7 +185,7 @@ test('should be able to inject property of a dependency in sample', function (t)
   t.same(result, [])
 })
 
-test('should not fail because of a lack of ";"', function (t) {
+test('should not fail because of a lack of ";"', (t) => {
   t.plan(1)
   var sample = {
     file: '/some/path.md',
@@ -205,7 +204,7 @@ test('should not fail because of a lack of ";"', function (t) {
   t.same(result, [])
 })
 
-test('should fail when result comment is not evaluable', function (t) {
+test('should fail when result comment is not evaluable', (t) => {
   t.plan(1)
   var sample = {
     file: '/some/path.md',

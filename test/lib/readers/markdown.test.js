@@ -5,7 +5,7 @@ var test = require('ava')
 
 var readMarkdown = require('../../../lib/readers').markdown
 
-test.cb('should extract the examples from a Markdown file', function (t) {
+test.cb('should extract the examples from a Markdown file', (t) => {
   t.plan(1)
 
   var pathToFixture = path.join(__dirname, '../../fixtures/markdown-file.md')
