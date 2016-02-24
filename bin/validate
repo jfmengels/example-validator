@@ -7,10 +7,10 @@ var lib = require('../')
 
 function gracefulExit(errors) {
   if (errors) {
-    if (_.isArray(errors)) {
+    if (!_.isArray(errors)) {
+      console.error(errors.stack || errors)
+    } else if (errors.length) {
       console.error(errors.join('\n\n'))
-    } else {
-      console.error(errors.stack)
     }
   }
   process.exit(0)
