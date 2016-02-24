@@ -5,6 +5,7 @@ var test = require('ava')
 var splitIntoSamples = require('../../lib/splitIntoSamples')
 
 test('should split sample into multiple tests based on result comments', function (t) {
+  t.plan(1)
   var sample = [
     '2 + 3',
     '// => 5',
@@ -32,6 +33,7 @@ test('should split sample into multiple tests based on result comments', functio
 })
 
 test('should ignore normal comments', function (t) {
+  t.plan(1)
   var sample = [
     '2 + 3',
     '// this should be 5',
@@ -54,6 +56,7 @@ test('should ignore normal comments', function (t) {
 })
 
 test('should ignore code after last result comment', function (t) {
+  t.plan(1)
   var sample = [
     '2 + 3',
     '// => 5',
@@ -73,6 +76,7 @@ test('should ignore code after last result comment', function (t) {
 })
 
 test('should split only by real `\\n`', function (t) {
+  t.plan(1)
   var sample = [
     '"I\nam\non\nmultiple\nlines\n"// => 100',
     '2 + 3',
@@ -91,6 +95,7 @@ test('should split only by real `\\n`', function (t) {
 })
 
 test('should write unreadable type when result comment is not evaluable', function (t) {
+  t.plan(1)
   var sample = [
     '2 + 3',
     '// => bla bla 5'

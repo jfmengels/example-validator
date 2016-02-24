@@ -6,6 +6,7 @@ var test = require('ava')
 var validate = require('../../lib/validate')
 
 test('should validate sample where result is matching', function (t) {
+  t.plan(1)
   var sample = {
     file: '/some/path.md',
     startLine: 84,
@@ -21,6 +22,7 @@ test('should validate sample where result is matching', function (t) {
 })
 
 test('should validate sample where result is matching and needs deep-equality checking', function (t) {
+  t.plan(1)
   var sample = {
     file: '/some/path.md',
     startLine: 84,
@@ -36,6 +38,7 @@ test('should validate sample where result is matching and needs deep-equality ch
 })
 
 test('should throw an error when sample is not valid', function (t) {
+  t.plan(1)
   var sample = {
     file: '/some/path.md',
     startLine: 84,
@@ -58,6 +61,7 @@ test('should throw an error when sample is not valid', function (t) {
 })
 
 test('should throw an error when error is thrown in sample', function (t) {
+  t.plan(1)
   var sample = {
     file: '/some/path.md',
     startLine: 84,
@@ -85,6 +89,7 @@ test('should throw an error when error is thrown in sample', function (t) {
 })
 
 test('should validate when error is expected', function (t) {
+  t.plan(1)
   var sample = {
     file: '/some/path.md',
     startLine: 84,
@@ -101,6 +106,7 @@ test('should validate when error is expected', function (t) {
 })
 
 test('should throw an error when assert fails in sample', function (t) {
+  t.plan(1)
   var sample = {
     file: '/some/path.md',
     startLine: 84,
@@ -117,6 +123,7 @@ test('should throw an error when assert fails in sample', function (t) {
 })
 
 test('should be able to inject context in sample', function (t) {
+  t.plan(1)
   var context = {
     lib: {
       return6: function () { return 6 }
@@ -137,6 +144,7 @@ test('should be able to inject context in sample', function (t) {
 })
 
 test('should be able to inject dependencies in sample', function (t) {
+  t.plan(1)
   var dependencies = {
     timesThree: {
       path: path.join(__dirname, '../fixtures/timesThree')
@@ -157,6 +165,7 @@ test('should be able to inject dependencies in sample', function (t) {
 })
 
 test('should be able to inject property of a dependency in sample', function (t) {
+  t.plan(1)
   var dependencies = {
     timesFour: {
       path: path.join(__dirname, '../fixtures/timesThree'),
@@ -178,6 +187,7 @@ test('should be able to inject property of a dependency in sample', function (t)
 })
 
 test('should not fail because of a lack of ";"', function (t) {
+  t.plan(1)
   var sample = {
     file: '/some/path.md',
     startLine: 84,
@@ -196,6 +206,7 @@ test('should not fail because of a lack of ";"', function (t) {
 })
 
 test('should fail when result comment is not evaluable', function (t) {
+  t.plan(1)
   var sample = {
     file: '/some/path.md',
     startLine: 84,
