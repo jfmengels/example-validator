@@ -2,8 +2,14 @@
 'use strict'
 
 var _ = require('lodash/fp')
+var fs = require('fs')
 
 var lib = require('../')
+var argv = require('yargs')
+  .config('config', function (configPath) {
+    return JSON.parse(fs.readFileSync(configPath, 'utf-8'))
+  })
+  .argv
 
 function gracefulExit(errors) {
   if (errors) {
@@ -16,10 +22,10 @@ function gracefulExit(errors) {
   process.exit(0)
 }
 
-var fileName = process.argv[2]
+var fileName = argv._[0]
 lib.readers.markdown(fileName, function(error, examples) {
   if (error) {
     return gracefulExit(error)
   }
-  gracefulExit(lib.processExamples({}, examples))
+  gracefulExit(lib.processExamples(argv, examples))
 })
