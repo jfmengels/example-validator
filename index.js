@@ -1,4 +1,8 @@
 'use strict'
 
-module.exports.readers = require('./lib/readers')
-module.exports.validate = require('./lib/validate')
+module.exports = {
+  describeError: require('./lib/describeError'),
+  processExamples: require('./lib/processExamples'),
+  readers: require('./lib/readers'),
+  validate: require('./lib/validate')
+}

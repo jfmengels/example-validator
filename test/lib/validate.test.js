@@ -11,7 +11,7 @@ test('should validate sample where result is matching', function (t) {
     '// => 5'
   ].join('\n')
 
-  var result = validate(sample)
+  var result = validate({}, sample)
 
   t.same(result, [])
 })
@@ -22,7 +22,7 @@ test('should validate sample where result is matching and needs deep-equality ch
     '// => [2, 3]'
   ].join('\n')
 
-  var result = validate(sample)
+  var result = validate({}, sample)
 
   t.same(result, [])
 })
@@ -33,7 +33,7 @@ test('should throw an error when sample is not valid', function (t) {
     '// => 6'
   ].join('\n')
 
-  var result = validate(sample)
+  var result = validate({}, sample)
 
   t.same(result, [{
     code: '2 + 3',
@@ -51,7 +51,7 @@ test('should throw an error when error is thrown in sample', function (t) {
     '// => 6'
   ].join('\n')
 
-  var result = validate(sample)
+  var result = validate({}, sample)
 
   t.same(result, [{
     code: [
@@ -72,7 +72,7 @@ test('should validate when error is expected', function (t) {
     '// => "TypeError: a.getUnknownMethod is not a function"'
   ].join('\n')
 
-  var result = validate(sample)
+  var result = validate({}, sample)
 
   t.same(result, [])
 })
@@ -84,7 +84,7 @@ test('should throw an error when assert fails in sample', function (t) {
     '// => "AssertionError: 1 == 2"'
   ].join('\n')
 
-  var result = validate(sample)
+  var result = validate({}, sample)
 
   t.same(result, [])
 })
@@ -100,7 +100,7 @@ test('should be able to inject context in sample', function (t) {
     '// => 6'
   ].join('\n')
 
-  var result = validate(sample, { context: context })
+  var result = validate({ context: context }, sample)
 
   t.same(result, [])
 })
@@ -116,7 +116,7 @@ test('should be able to inject dependencies in sample', function (t) {
     '// => 9'
   ].join('\n')
 
-  var result = validate(sample, { dependencies: dependencies })
+  var result = validate({ dependencies: dependencies }, sample)
 
   t.same(result, [])
 })
@@ -133,7 +133,7 @@ test('should be able to inject property of a dependency in sample', function (t)
     '// => 12'
   ].join('\n')
 
-  var result = validate(sample, { dependencies: dependencies })
+  var result = validate({ dependencies: dependencies }, sample)
 
   t.same(result, [])
 })
@@ -147,7 +147,7 @@ test('should not fail because of a lack of ";"', function (t) {
     '// => [2, 3]'
   ].join('\n')
 
-  var result = validate(sample)
+  var result = validate({}, sample)
 
   t.same(result, [])
 })
@@ -158,7 +158,7 @@ test('should fail when result comment is not evaluable', function (t) {
     '// => bla bla 5'
   ].join('\n')
 
-  var result = validate(sample)
+  var result = validate({}, sample)
 
   t.same(result, [{
     code: '2 + 3',

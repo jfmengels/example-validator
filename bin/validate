@@ -5,41 +5,27 @@ var _ = require('lodash/fp')
 
 var lib = require('../')
 
-function gracefulExit(error) {
-  if (error) {
-    console.error(error)
-    process.exit(1)
+function gracefulExit(errors) {
+  if (errors) {
+    if (_.isArray(errors)) {
+      console.error(errors.join('\n\n'))
+    } else {
+      console.error(errors.stack)
+    }
   }
   process.exit(0)
 }
 
-function describeError(error) {
-  if (error.error) {
-    return 'Could not parse result comment: ' + error.error +
-      '\nNear:\n' + error.code
-  }
-  return '\tLine ' + error.line + ': ' + error.expression +
-    '\nExpected ' + error.expected +
-    '\nbut got ' + error.got +
-    '\nNear:\n' + error.code
-}
-
-lib.readers.markdown(process.argv[2], function(error, examples) {
+var fileName = process.argv[2]
+lib.readers.markdown(fileName, function(error, examples) {
   if (error) {
     return gracefulExit(error)
   }
-
-  var errors = _.flow(
-    _.map(function(example) {
-      return lib.validate(example)
-    }),
-    _.flatten
-  )(examples)
-
-  if (errors.length === 0) {
-    console.log('All good!')
-    return gracefulExit()
-  }
-  var errorsDescription = errors.map(describeError).join('\n')
-  gracefulExit(errorsDescription)
+  var exampleItems = examples.map(function(example) {
+    return {
+      file: fileName,
+      code: example
+    }
+  })
+  gracefulExit(lib.processExamples({}, exampleItems))
 })
