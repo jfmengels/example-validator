@@ -2,7 +2,7 @@
 
 var test = require('ava')
 
-var splitIntoSamples = require('../../lib/splitIntoSamples')
+var splitSampleIntoTests = require('../../lib/splitSampleIntoTests')
 
 test('should split sample into multiple tests based on result comments', (t) => {
   t.plan(1)
@@ -14,7 +14,7 @@ test('should split sample into multiple tests based on result comments', (t) => 
     '// => "27"'
   ].join('\n')
 
-  var result = splitIntoSamples(sample)
+  var result = splitSampleIntoTests(sample)
 
   t.same(result, [{
     code: [
@@ -42,7 +42,7 @@ test('should ignore normal comments', (t) => {
     '// => "27"'
   ].join('\n')
 
-  var result = splitIntoSamples(sample)
+  var result = splitSampleIntoTests(sample)
 
   t.same(result, [{
     code: [
@@ -65,7 +65,7 @@ test('should ignore code after last result comment', (t) => {
     '// this should be "27"'
   ].join('\n')
 
-  var result = splitIntoSamples(sample)
+  var result = splitSampleIntoTests(sample)
 
   t.same(result, [{
     code: [
@@ -83,7 +83,7 @@ test('should split only by real `\\n`', (t) => {
     '// => 5'
   ].join('\n')
 
-  var result = splitIntoSamples(sample)
+  var result = splitSampleIntoTests(sample)
 
   t.same(result, [{
     code: [
@@ -101,7 +101,7 @@ test('should write unreadable type when result comment is not evaluable', (t) =>
     '// => bla bla 5'
   ].join('\n')
 
-  var result = splitIntoSamples(sample)
+  var result = splitSampleIntoTests(sample)
 
   t.same(result, [{
     code: '2 + 3',
