@@ -1,9 +1,9 @@
-'use strict'
+'use strict';
 
 module.exports = function (a) {
-  return a * 3
-}
+  return a * 3;
+};
 
 module.exports.timesFour = function (a) {
-  return a * 4
-}
+  return a * 4;
+};
